@@ -5,7 +5,7 @@ type Crate = Char
 -- crates are arranged top to bottom
 type Stack = [Crate]
 
-data Proc = Proc { num :: Int, from :: Int, to :: Int }
+data Proc = Proc { num, from, to :: Int }
 
 -- describes a crane that lifts a certain number of crates off a stack
 type Lifter = (Int -> Stack -> [Crate])
