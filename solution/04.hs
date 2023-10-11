@@ -4,18 +4,16 @@ type SectionID = Int
 
 type Elf = (SectionID, SectionID)
 
-type ElfPairs = [(Elf, Elf)]
-
-parseElves :: String -> ElfPairs
+parseElves :: String -> [(Elf, Elf)]
 parseElves = lines >>> map (splitOnFirst ',' >>> mapPair parseElf)
   where parseElf = splitOnFirst '-' >>> mapPair read
 
-countContaining :: ElfPairs -> Int
+countContaining :: [(Elf, Elf)] -> Int
 countContaining = filter (\(a, b) -> (fst a <= fst b && snd a >= snd b)
                                   || (fst a >= fst b && snd a <= snd b))
                   >>> length
 
-countOverlapping :: ElfPairs -> Int
+countOverlapping :: [(Elf, Elf)] -> Int
 countOverlapping = filter (\(a, b) -> not ((fst a < fst b && snd a < fst b)
                                         || (fst a > snd b && snd a > snd b)))
                    >>> length
