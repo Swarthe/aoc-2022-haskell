@@ -1,13 +1,13 @@
 module Lib
-  ( readInput, splitOn, splitOnFirst, pierceAt, mapPair
-  , sort, group, nub, transpose, isPrefixOf, elemIndex, findIndex
+  ( readInput, splitOn, splitOnFirst, pierceAt, elemIx, findIx, mapLines, mapPair
+  , sort, group, nub, transpose, isPrefixOf
   , fromJust
   , isLower, isAlpha, isDigit, ord, chr
   , (&), (>>>)
   )
 where
 
-import Data.List (sort, group, nub, transpose, isPrefixOf, elemIndex, findIndex)
+import Data.List (sort, group, nub, transpose, isPrefixOf, findIndex)
 import Data.Maybe (fromJust)
 import Data.Char (isLower, isAlpha, isDigit, ord, chr)
 
@@ -34,6 +34,15 @@ deleteAt i l = ys ++ xs
 
 pierceAt :: Int -> [a] -> ([a], [a])
 pierceAt i l = drop 1 <$> splitAt i l
+
+elemIx :: Eq a => a -> [a] -> Int
+elemIx a = findIx (== a)
+
+findIx :: (a -> Bool) -> [a] -> Int
+findIx f = fromJust . findIndex f
+
+mapLines :: (String -> a) -> String -> [a]
+mapLines f = map f . lines
 
 mapPair :: (a -> b) -> (a, a) -> (b, b)
 mapPair f (x, y) = (f x, f y)

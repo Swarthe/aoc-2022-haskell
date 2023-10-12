@@ -40,7 +40,7 @@ moveForPred (Pred m r) = moveFromInt $ case r of
   where i = moveToInt m
 
 parseWith :: (Char -> Char -> a) -> String -> [a]
-parseWith f = lines >>> map (\(a : _ : b : _) -> f a b)
+parseWith f = mapLines (\(a : _ : b : _) -> f a b)
 
 parseGames :: String -> [Game]
 parseGames = parseWith $ \c d ->

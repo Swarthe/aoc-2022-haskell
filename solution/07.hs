@@ -37,7 +37,7 @@ parseItems = (:) (Dir ["/"]) . go [] . parseCmds
 
         parseItem curPath raw = case take 3 raw of
             "dir" -> Dir { dpath = curPath ++ [drop 4 raw] }
-            _     -> let Just i = elemIndex ' ' raw in
+            _     -> let i = elemIx ' ' raw in
                      File { fpath = curPath ++ [drop (i + 1) raw]
                           , size = read $ take i raw }
 

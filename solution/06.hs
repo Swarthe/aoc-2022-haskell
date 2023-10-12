@@ -2,8 +2,7 @@ import Lib
 
 findMarkerIx :: Int -> String -> Int
 findMarkerIx n = windows
-    >>> findIndex (\w -> length w == length (nub w))
-    >>> fromJust
+    >>> findIx (\w -> length w == length (nub w))
     >>> (+ n)   -- past the marker
   where windows l | length l >= n = take n l : windows (tail l)
                   | otherwise     = []

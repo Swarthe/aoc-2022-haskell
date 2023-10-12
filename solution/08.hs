@@ -13,7 +13,7 @@ innerIxs ts = [(y, x) | y <- [1 .. length ts - 2],
                         x <- [1 .. length (head ts) - 2]]
 
 parseTrees :: String -> [[Tree]]
-parseTrees = lines >>> map (map $ read . (:[]))
+parseTrees = mapLines (map $ read . (:[]))
 
 countVisible :: [[Tree]] -> Int
 countVisible ts = innerIxs ts
