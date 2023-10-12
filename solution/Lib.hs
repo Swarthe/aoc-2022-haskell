@@ -1,5 +1,5 @@
 module Lib
-  ( readInput, splitOn, splitOnFirst, mapPair
+  ( readInput, splitOn, splitOnFirst, pierceAt, mapPair
   , sort, group, nub, transpose, isPrefixOf, elemIndex, findIndex
   , fromJust
   , isLower, isAlpha, isDigit, ord, chr
@@ -27,6 +27,13 @@ splitOn a xs = case break (== a) xs of
 splitOnFirst :: Eq a => a -> [a] -> ([a], [a])
 splitOnFirst a xs = (ys, drop 1 zs)
   where (ys, zs) = break (== a) xs
+
+deleteAt :: Int -> [a] -> [a]
+deleteAt i l = ys ++ xs
+  where (xs, ys) = pierceAt i l
+
+pierceAt :: Int -> [a] -> ([a], [a])
+pierceAt i l = drop 1 <$> splitAt i l
 
 mapPair :: (a -> b) -> (a, a) -> (b, b)
 mapPair f (x, y) = (f x, f y)
