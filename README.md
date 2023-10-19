@@ -6,8 +6,8 @@
 started with 0 haskell knowledge. earlier solutions were updated as i
 accumulated haskell experience
 
-- my favourite: `06`
-- my hardest: `07`
+- my favourites: `06`
+- my hardest: `07`, `09`
 
 to run the solutions, i recommend using `runghc [FILE]` in the `solutions/`
 directory. each day has a corresponding file as a solution, which outputs two
