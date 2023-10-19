@@ -9,7 +9,7 @@ accumulated haskell experience
 - my favourites: `06`
 - my hardest: `07`, `09`
 
-to run the solutions, i recommend using `runghc [FILE]` in the `solutions/`
+to run the solutions, i recommend using `runghc -w [FILE]` in the `solutions/`
 directory. each day has a corresponding file as a solution, which outputs two
 lines when run (one for each part of the puzzle)
 
