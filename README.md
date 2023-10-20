@@ -6,7 +6,7 @@
 started with 0 haskell knowledge. earlier solutions were updated as i
 accumulated haskell experience
 
-- my favourites: `06`
+- my favourites: `06`, `09`
 - my hardest: `07`, `09`
 
 to run the solutions, i recommend using `runghc -w [FILE]` in the `solutions/`
