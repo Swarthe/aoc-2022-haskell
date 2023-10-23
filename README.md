@@ -3,10 +3,10 @@
 [Advent of Code 2022](https://adventofcode.com/2022) in vanilla Haskell
 (incomplete).
 
-started with 0 haskell knowledge. earlier solutions were updated as i
-accumulated haskell experience
+started with 0 haskell knowledge, and used the puzzles to learn haskell.
+earlier solutions were updated as i accumulated haskell experience
 
-- my favourites: `06`, `09`
+- my favourites: `06`, `09`, `10`
 - my hardest: `07`, `09`
 
 to run the solutions, i recommend using `runghc -w [FILE]` in the `solutions/`

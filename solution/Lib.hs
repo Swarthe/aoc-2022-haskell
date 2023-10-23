@@ -4,6 +4,7 @@ module Lib
   , fromJust
   , isLower, isAlpha, isDigit, ord, chr
   , inRange
+  , toList
   , (&), (>>>)
   )
 where
@@ -12,6 +13,7 @@ import Data.List (sort, group, nub, transpose, isPrefixOf, findIndex)
 import Data.Maybe (fromJust)
 import Data.Char (isLower, isAlpha, isDigit, ord, chr)
 import Data.Ix (inRange)
+import Data.Foldable (toList)
 
 import Data.Function ((&))
 import Control.Arrow ((>>>))
