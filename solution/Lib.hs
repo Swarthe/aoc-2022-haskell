@@ -33,10 +33,6 @@ splitOnFirst :: Eq a => a -> [a] -> ([a], [a])
 splitOnFirst a xs = (ys, drop 1 zs)
   where (ys, zs) = break (== a) xs
 
-deleteAt :: Int -> [a] -> [a]
-deleteAt i l = ys ++ xs
-  where (xs, ys) = pierceAt i l
-
 pierceAt :: Int -> [a] -> ([a], [a])
 pierceAt i l = drop 1 <$> splitAt i l
 
