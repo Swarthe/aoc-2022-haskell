@@ -1,5 +1,5 @@
 module Lib
-  ( readInput, splitOn, splitOnFirst, pierceAt, elemIx, findIx, mapLines, mapPair
+  ( solvePuzzle, splitOn, splitOnFirst, pierceAt, elemIx, findIx, mapLines, mapPair
   , sort, group, nub, transpose, isPrefixOf
   , fromJust
   , isLower, isAlpha, isDigit, ord, chr
@@ -18,8 +18,11 @@ import Control.Arrow ((>>>))
 
 import Text.Printf (printf)
 
-readInput :: Int -> IO String
-readInput = readFile . printf "../input/%02d.txt"
+solvePuzzle :: (Show a, Show b) => Int -> (String -> (a, b)) -> IO ()
+solvePuzzle day solution = do
+    (p1, p2) <- solution <$> readInput day
+    print p1; print p2
+  where readInput = readFile . printf "../input/%02d.txt"
 
 splitOn :: Eq a => a -> [a] -> [[a]]
 splitOn a xs = case break (== a) xs of

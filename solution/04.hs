@@ -18,8 +18,7 @@ countOverlapping = filter (\(a, b) -> not ((fst a < fst b && snd a < fst b)
                                         || (fst a > snd b && snd a > snd b)))
                    >>> length
 
-main = do
-    elves <- parseElves <$> readInput 4
-
-    print $ countContaining  elves
-    print $ countOverlapping elves
+main = solvePuzzle 4 $ \input ->
+    let elves = parseElves input
+     in ( countContaining  elves
+        , countOverlapping elves )

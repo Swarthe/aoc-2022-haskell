@@ -46,11 +46,9 @@ rearrange9001 = rearrange take
 topCrates :: [Stack] -> [Crate]
 topCrates = map head
 
-main = do
-    input <- readInput 5
-
+main = solvePuzzle 5 $ \input ->
     let stacks = parseStacks input
-    let procs = parseProcs input
-
-    putStrLn $ topCrates (rearrange9000 procs stacks)
-    putStrLn $ topCrates (rearrange9001 procs stacks)
+        procs = parseProcs input
+     in mapPair topCrates
+            ( rearrange9000 procs stacks
+            , rearrange9001 procs stacks )

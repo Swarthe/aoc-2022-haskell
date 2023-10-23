@@ -9,8 +9,7 @@ parseCalorieSums = lines
 last3 [a, b, c] = [a, b, c]
 last3 (_ : xs) = last3 xs
 
-main = do
-    calSums <- parseCalorieSums <$> readInput 1
-
-    print $ last calSums
-    print $ last3 calSums & sum
+main = solvePuzzle 1 $ \input ->
+    let calSums = parseCalorieSums input
+     in ( last calSums
+        , sum $ last3 calSums )

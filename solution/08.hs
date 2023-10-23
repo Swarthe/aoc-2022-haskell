@@ -35,8 +35,7 @@ maxScenicScore ts = maximum $ map scenicScore (innerIxs ts)
             if f x then x : takeWhileInc f xs
                    else [x]
 
-main = do
-    trees <- parseTrees <$> readInput 8
-
-    print $ countVisible trees
-    print $ maxScenicScore trees
+main = solvePuzzle 8 $ \input ->
+    let trees = parseTrees input
+     in ( countVisible trees
+        , maxScenicScore trees )

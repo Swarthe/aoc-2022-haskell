@@ -43,8 +43,8 @@ visited _ [] = Set.empty
 visited rope (m : ms) = let moved = move m rope in
     Set.singleton (last moved) `Set.union` visited moved ms
 
-main = do
-    motions <- parseOffsets <$> readInput 9
-
-    print $ Set.size $ visited (withLen 2) motions
-    print $ Set.size $ visited (withLen 10) motions
+main = solvePuzzle 9 $ \input ->
+    let motions = parseOffsets input
+      in mapPair Set.size
+             ( visited (withLen 2) motions
+             , visited (withLen 10) motions )

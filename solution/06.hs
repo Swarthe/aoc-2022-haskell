@@ -7,8 +7,6 @@ findMarkerIx n = windows
   where windows l | length l >= n = take n l : windows (tail l)
                   | otherwise     = []
 
-main = do
-    input <- readInput 6
-
-    print $ findMarkerIx 4  input
-    print $ findMarkerIx 14 input
+main = solvePuzzle 6 $ \input ->
+    ( findMarkerIx 4  input
+    , findMarkerIx 14 input )

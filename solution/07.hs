@@ -71,14 +71,10 @@ findDirToShrink size itemSizes =
   where totalSize = snd (head itemSizes)
         delSize = totalSize - size
 
-main = do
-    input <- readInput 7
-
+main = solvePuzzle 7 $ \input ->
     let ds = dirSizes (parseItems input)
-
-    print $ ds & map snd
-               & filter (<= 100000)
-               & sum
-
-    print $ ds & findDirToShrink 40000000
-               & snd
+     in ( ds & map snd
+             & filter (<= 100000)
+             & sum
+        , ds & findDirToShrink 40000000
+             & snd )

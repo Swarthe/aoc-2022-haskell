@@ -36,8 +36,6 @@ totalDupPrio = map (prio . dupItem) >>> sum
 totalBadgePrio :: [Group] -> Int
 totalBadgePrio = map (prio . badge) >>> sum
 
-main = do
-    input <- readInput 3
-
-    print $ totalDupPrio   (parseRucksacks input)
-    print $ totalBadgePrio (parseGroups    input)
+main = solvePuzzle 3 $ \input ->
+    ( totalDupPrio   (parseRucksacks input)
+    , totalBadgePrio (parseGroups    input) )

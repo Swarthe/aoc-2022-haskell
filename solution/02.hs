@@ -71,8 +71,7 @@ computeScore games = sum $
         results =
             map play games
 
-main = do
-    input <- readInput 2
-
-    print $ computeScore (parseGames     input)
-    print $ computeScore (parsePredGames input)
+main = solvePuzzle 2 $ \input ->
+    mapPair computeScore
+        ( parseGames     input
+        , parsePredGames input )
