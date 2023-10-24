@@ -1,6 +1,6 @@
 module Lib
   ( solvePuzzle, splitOn, splitOnFirst, pierceAt, elemIx, findIx, mapLines, mapPair
-  , sort, group, nub, transpose, isPrefixOf
+  , sort, group, nub, transpose, intercalate, isPrefixOf
   , fromJust
   , isLower, isAlpha, isDigit, ord, chr
   , inRange
@@ -9,7 +9,7 @@ module Lib
   )
 where
 
-import Data.List (sort, group, nub, transpose, isPrefixOf, findIndex)
+import Data.List (sort, group, nub, transpose, intercalate, isPrefixOf, findIndex)
 import Data.Maybe (fromJust)
 import Data.Char (isLower, isAlpha, isDigit, ord, chr)
 import Data.Ix (inRange)
