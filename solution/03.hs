@@ -36,6 +36,6 @@ totalDupPrio = map (prio . dupItem) >>> sum
 totalBadgePrio :: [Group] -> Int
 totalBadgePrio = map (prio . badge) >>> sum
 
-main = solvePuzzle 3 $ \input ->
+main = solution 3 $ \input ->
     ( totalDupPrio   (parseRucksacks input)
     , totalBadgePrio (parseGroups    input) )

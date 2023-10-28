@@ -9,7 +9,7 @@ parseCalorieSums = lines
 last3 [a, b, c] = [a, b, c]
 last3 (_ : xs) = last3 xs
 
-main = solvePuzzle 1 $ \input ->
+main = solution 1 $ \input ->
     let calSums = parseCalorieSums input
      in ( last calSums
         , sum $ last3 calSums )

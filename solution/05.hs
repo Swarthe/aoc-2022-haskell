@@ -46,7 +46,7 @@ rearrange9001 = rearrange take
 topCrates :: [Stack] -> [Crate]
 topCrates = map head
 
-main = solvePuzzle 5 $ \input ->
+main = solution 5 $ \input ->
     let stacks = parseStacks input
         procs = parseProcs input
      in mapPair topCrates

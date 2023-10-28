@@ -71,7 +71,7 @@ computeScore games = sum $
         results =
             map play games
 
-main = solvePuzzle 2 $ \input ->
+main = solution 2 $ \input ->
     mapPair computeScore
         ( parseGames     input
         , parsePredGames input )

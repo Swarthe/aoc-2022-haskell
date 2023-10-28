@@ -71,7 +71,7 @@ findDirToShrink size itemSizes =
   where totalSize = snd (head itemSizes)
         delSize = totalSize - size
 
-main = solvePuzzle 7 $ \input ->
+main = solution 7 $ \input ->
     let ds = dirSizes (parseItems input)
      in ( ds & map snd
              & filter (<= 100000)

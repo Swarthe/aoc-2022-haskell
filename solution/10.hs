@@ -67,7 +67,7 @@ renderCrt instrs = evalState (compute instrs) def
         splitEvery n xs = let (ys, zs) = splitAt n xs
             in ys : splitEvery n zs
 
-main = solvePuzzle 10 $ \input ->
+main = solution 10 $ \input ->
     let instrs = parseInstrs input
      in ( sumSigStrengths 6 instrs
         , renderCrt instrs )

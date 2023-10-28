@@ -7,6 +7,6 @@ findMarkerIx n = windows
   where windows l | length l >= n = take n l : windows (tail l)
                   | otherwise     = []
 
-main = solvePuzzle 6 $ \input ->
+main = solution 6 $ \input ->
     ( findMarkerIx 4  input
     , findMarkerIx 14 input )

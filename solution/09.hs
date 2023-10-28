@@ -43,7 +43,7 @@ visited _ [] = Set.empty
 visited rope (m : ms) = let moved = move m rope in
     Set.singleton (last moved) `Set.union` visited moved ms
 
-main = solvePuzzle 9 $ \input ->
+main = solution 9 $ \input ->
     let motions = parseOffsets input
       in mapPair Set.size
              ( visited (withLen 2) motions
