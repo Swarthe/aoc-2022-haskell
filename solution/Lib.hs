@@ -4,6 +4,7 @@ module Lib
   , isLower, isAlpha, isDigit, ord, chr
   , inRange
   , toList
+  , on
   , (&), (>>>)
   )
 where
@@ -13,7 +14,7 @@ import Data.Char (isLower, isAlpha, isDigit, ord, chr)
 import Data.Ix (inRange)
 import Data.Foldable (toList)
 
-import Data.Function ((&))
+import Data.Function ((&), on)
 import Control.Arrow ((>>>))
 
 import Text.Printf (printf)

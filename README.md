@@ -6,7 +6,7 @@
 started with 0 haskell knowledge, and used the puzzles to learn haskell.
 earlier solutions were updated as i accumulated haskell experience
 
-- my favourites: `06`, `09`, `10`
+- my favourites: `06`, `09`, `11`
 - my hardest: `07`, `09`
 
 to run the solutions, i recommend using `runghc -w [FILE]` in the `solutions/`
