@@ -7,6 +7,10 @@ import qualified Data.Sequence as Seq
 
 type MonkeyIx = Int
 
+type Handler = Monkey -> Int -> Int
+
+type Reduction = Int
+
 data Op = Mul Int | Add Int | Square
 
 data Monkey = Monkey
@@ -18,12 +22,12 @@ data Monkey = Monkey
     , targetIfFalse :: MonkeyIx
     , inspections :: Int }
 
-runTurn :: Monkey -> State (Seq Monkey) ()
-runTurn monkey = do
+runTurn :: Handler -> Monkey -> State (Seq Monkey) ()
+runTurn handler monkey = do
     let items = itemWorries monkey
 
     forM_ items $ \item ->
-        let newItem = apply (worryOp monkey) item `div` 3
+        let newItem = handler monkey item
          in modify $ flip adjust (targetIxFor newItem) $
                 \m -> m { itemWorries = itemWorries m ++ [newItem] }
 
@@ -33,35 +37,46 @@ runTurn monkey = do
   where targetIxFor worry = monkey &
             if worry `rem` testDivBy monkey == 0
             then targetIfTrue else targetIfFalse
-        apply o worry = case o of
-            Mul i -> worry * i
-            Add i -> worry + i
-            Square -> worry * worry
 
 parseMonkeys :: String -> Seq Monkey
 parseMonkeys = Seq.fromList . map parseMonkey . splitOn "" . lines
   where parseMonkey (a : b : c : d : e : f : _) =
-            Monkey { ix = readLastInt (init a)
+            Monkey { ix = readLast (init a)
                    , itemWorries = parseItems b
                    , worryOp = parseOp c
-                   , testDivBy = readLastInt d
-                   , targetIfTrue = readLastInt e
-                   , targetIfFalse = readLastInt f
+                   , testDivBy = readLast d
+                   , targetIfTrue = readLast e
+                   , targetIfFalse = readLast f
                    , inspections = 0 }
         parseOp l = let c : _ : s = drop 23 l in
             case c of '*' | s == "old" -> Square
                           | otherwise -> Mul (read s)
                       '+' -> Add (read s)
         parseItems = map read . splitOn ',' . drop 18
-        readLastInt = read . last . words
+        readLast = read . last . words
 
-runRounds :: Seq Monkey -> [Seq Monkey]
-runRounds = iterate (execState runRound)
+monkeyReduction :: Seq Monkey -> Reduction
+monkeyReduction = product . fmap testDivBy
+
+handlerWith :: Reduction -> Handler
+handlerWith reduction monkey = (`rem` reduction)
+    >>> case worryOp monkey of
+            Mul i -> (* i)
+            Add i -> (+ i)
+            Square -> (^ 2)
+
+runRounds :: Handler -> Seq Monkey -> [Seq Monkey]
+runRounds handler = iterate (execState runRound)
   where runRound = do
             monkeyCount <- gets Seq.length
 
             forM_ [0 .. monkeyCount - 1] $ \i ->
-                gets (`index` i) >>= runTurn
+                gets (`index` i) >>= runTurn handler
+        applyWith reduction monkey = (`rem` reduction)
+            >>> case worryOp monkey of
+                    Mul i -> (* i)
+                    Add i -> (+ i)
+                    Square -> (^ 2)
 
 monkeyBusiness :: Seq Monkey -> Int
 monkeyBusiness monkeys = inspections a * inspections b
@@ -69,6 +84,10 @@ monkeyBusiness monkeys = inspections a * inspections b
         (a, b) = (ord `index` 0, ord `index` 1)
 
 main = solution 11 $ \input ->
-    let rounds = runRounds (parseMonkeys input)
-     in ( monkeyBusiness (rounds !! 20)
-        , "TODO" )
+    let monkeys = parseMonkeys input
+        reduction = monkeyReduction monkeys
+        handler = handlerWith reduction
+        rounds1 = runRounds (((`div` 3) .) . handler) monkeys
+        rounds2 = runRounds handler monkeys
+     in ( monkeyBusiness (rounds1 !! 20)
+        , monkeyBusiness (rounds2 !! 10000) )
