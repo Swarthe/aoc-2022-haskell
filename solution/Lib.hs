@@ -1,6 +1,6 @@
 module Lib
   ( solution, splitOn, splitOnFirst, pierceAt, elemIx, findIx, mapLines, mapPair
-  , sort, group, nub, transpose, intercalate, isPrefixOf
+  , sort, group, nub, transpose, intercalate, isPrefixOf, find
   , isLower, isAlpha, isDigit, ord, chr
   , inRange
   , toList
@@ -9,7 +9,10 @@ module Lib
   )
 where
 
-import Data.List (sort, group, nub, transpose, intercalate, isPrefixOf, findIndex)
+import Data.List
+    ( sort, group, nub, transpose, intercalate, isPrefixOf, find
+    , findIndex )
+
 import Data.Char (isLower, isAlpha, isDigit, ord, chr)
 import Data.Ix (inRange)
 import Data.Foldable (toList)
