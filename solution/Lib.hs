@@ -1,5 +1,5 @@
 module Lib
-  ( solution, splitOn, splitOnFirst, pierceAt, elemIx, findIx, mapLines, mapPair
+  ( solution, splitOn, splitOnFirst, pierceAt, elemIx, findIx, mapLines, pmap
   , sort, group, nub, transpose, intercalate, isPrefixOf, find
   , isLower, isAlpha, isDigit, ord, chr
   , inRange
@@ -50,5 +50,5 @@ findIx f = fromJust . findIndex f
 mapLines :: (String -> a) -> String -> [a]
 mapLines f = map f . lines
 
-mapPair :: (a -> b) -> (a, a) -> (b, b)
-mapPair f (x, y) = (f x, f y)
+pmap :: (a -> b) -> (a, a) -> (b, b)
+pmap f (x, y) = (f x, f y)

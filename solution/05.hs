@@ -47,6 +47,6 @@ topCrates = map head
 main = solution 5 $ \input ->
     let stacks = parseStacks input
         procs = parseProcs input
-     in mapPair topCrates
+     in pmap topCrates
             ( rearrange9000 procs stacks
             , rearrange9001 procs stacks )

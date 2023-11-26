@@ -44,6 +44,6 @@ visited rope (m : ms) = let moved = move m rope in
 
 main = solution 9 $ \input ->
     let motions = parseOffsets input
-      in mapPair Set.size
+      in pmap Set.size
              ( visited (withLen 2) motions
              , visited (withLen 10) motions )

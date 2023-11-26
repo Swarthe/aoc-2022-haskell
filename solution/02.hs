@@ -66,6 +66,6 @@ computeScore games = sum $
             map play games
 
 main = solution 2 $ \input ->
-    mapPair computeScore
+    pmap computeScore
         ( parseGames     input
         , parsePredGames input )
