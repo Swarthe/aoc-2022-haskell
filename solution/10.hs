@@ -21,7 +21,6 @@ exec :: Instr -> Cpu -> Cpu
 exec NoOp (Cpu cycle x) = Cpu (cycle + 1) x
 exec (AddX i) (Cpu cycle x) = Cpu (cycle + 1) (x + i)
 
-parseInstrs :: String -> [Instr]
 parseInstrs = concat . mapLines parseInstr
   where parseInstr l = let (a, b) = pierceAt 4 l in
             case a of "noop" -> [NoOp]

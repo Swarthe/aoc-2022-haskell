@@ -17,11 +17,9 @@ badge (Group a b c) = toList a
     & head
   where toList (Rucksack a b) = a ++ b
 
-parseRucksacks :: String -> [Rucksack]
 parseRucksacks = mapLines (uncurry Rucksack . splitHalf)
   where splitHalf l = splitAt (length l `div` 2) l
 
-parseGroups :: String -> [Group]
 parseGroups = parseRucksacks
     >>> subGroup 3
     >>> map (\[a, b, c] -> Group a b c)

@@ -26,7 +26,6 @@ move offset (h : ts) =
         (x, y) +@ (x', y') = (x + x', y + y')
         (x, y) -@ (x', y') = (x - x', y - y')
 
-parseOffsets :: String -> [Offset]
 parseOffsets = concat . mapLines parseGroup
   where parseGroup (dir : _ : n) =
             replicate (read n) $ case dir of

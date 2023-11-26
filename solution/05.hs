@@ -10,7 +10,6 @@ data Proc = Proc { num, from, to :: Int }
 -- describes a crane that lifts a certain number of crates off a stack
 type Lifter = (Int -> Stack -> [Crate])
 
-parseStacks :: String -> [Stack]
 parseStacks = lines
     >>> take 8
     >>> map compact
@@ -19,7 +18,6 @@ parseStacks = lines
   where compact s = [c | (i, c) <- zip [0..] s,
                          (i - 1) `rem` 4 == 0]
 
-parseProcs :: String -> [Proc]
 parseProcs = lines >>> drop 10 >>>
     map (\l -> let (a, b, c) = (nextNum l, nextNum a, nextNum b) in
                Proc { num = int a, from = int b - 1, to = int c - 1 })

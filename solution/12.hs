@@ -8,7 +8,6 @@ import qualified Data.Map as Map
 
 import Data.List (elemIndices)
 
--- TODO: remove unnecessary type sigs
 -- TODO: rename mapPair to `pmap` (doesnt operator on list)
 -- TODO: reexport from Lib
 import Control.Monad.State

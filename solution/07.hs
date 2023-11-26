@@ -10,7 +10,6 @@ data Item = Dir { dpath :: [String] }
 
 type ItemSize = (Item, Int)
 
-parseCmds :: String -> [Cmd]
 parseCmds = conv . group . lines
   where group = groupBy $ \a b -> case head a of
             '$' -> head b == '$'
@@ -23,7 +22,6 @@ parseCmds = conv . group . lines
             "$ cd" -> Cd { dir = drop 5 c }
             "$ ls" -> Ls { output = outs }
 
-parseItems :: String -> [Item]
 parseItems = (:) (Dir ["/"]) . go [] . parseCmds
   where go curPath (Cd dir : cmds) =
             let newPath = case dir of

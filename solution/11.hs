@@ -38,7 +38,6 @@ runTurn handler monkey = do
             if worry `rem` testDivBy monkey == 0
             then targetIfTrue else targetIfFalse
 
-parseMonkeys :: String -> Seq Monkey
 parseMonkeys = Seq.fromList . map parseMonkey . splitOn "" . lines
   where parseMonkey (a : b : c : d : e : f : _) =
             Monkey { ix = readLast (init a)

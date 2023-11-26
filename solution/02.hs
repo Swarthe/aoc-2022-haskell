@@ -8,18 +8,15 @@ data Game = Game Move Move
 
 data Pred = Pred Move Result
 
-moveFromChar :: Char -> Move
 moveFromChar c | c `elem` "AX" = Rock
                | c `elem` "BY" = Paper
                | c `elem` "CZ" = Scissors
 
-moveFromInt :: Int -> Move
 moveFromInt i = case i of
     0 -> Rock
     1 -> Paper
     2 -> Scissors
 
-moveToInt :: Move -> Int
 moveToInt m = case m of
     Rock -> 0
     Paper -> 1
@@ -32,7 +29,6 @@ play (Game a b) = case (3 + i - j) `rem` 3 of
     2 -> Loss
   where (i, j) = (moveToInt a, moveToInt b)
 
-moveForPred :: Pred -> Move
 moveForPred (Pred m r) = moveFromInt $ case r of
     Victory -> (i + 1) `mod` 3
     Loss -> (i - 1) `mod` 3
@@ -42,11 +38,9 @@ moveForPred (Pred m r) = moveFromInt $ case r of
 parseWith :: (Char -> Char -> a) -> String -> [a]
 parseWith f = mapLines (\(a : _ : b : _) -> f a b)
 
-parseGames :: String -> [Game]
 parseGames = parseWith $ \c d ->
     Game (moveFromChar d) (moveFromChar c)
 
-parsePredGames :: String -> [Game]
 parsePredGames = map predict . parsePreds
   where parsePreds = parseWith $ \c d ->
             Pred (moveFromChar c) (resultFromChar d)
