@@ -6,6 +6,7 @@ module Lib
   , toList
   , on
   , (&), (>>>)
+  , module Control.Monad.State
   )
 where
 
@@ -20,8 +21,11 @@ import Data.Foldable (toList)
 import Data.Function ((&), on)
 import Control.Arrow ((>>>))
 
+import Control.Monad.State
+
 import Text.Printf (printf)
 import Data.Maybe (fromJust)
+
 
 solution :: (Show a, Show b) => Int -> (String -> (a, b)) -> IO ()
 solution day solver = do

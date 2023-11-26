@@ -8,9 +8,6 @@ import qualified Data.Map as Map
 
 import Data.List (elemIndices)
 
--- TODO: reexport from Lib
-import Control.Monad.State
-
 data HeightMap = HeightMap
     { heights :: Map Pos Int
     , h, w :: Int }

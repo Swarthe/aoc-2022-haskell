@@ -3,7 +3,6 @@ import Lib
 import Prelude hiding (cycle)
 
 import Data.Default
-import Control.Monad.State
 
 data Instr = NoOp | AddX Int
 

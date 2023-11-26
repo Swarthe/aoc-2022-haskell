@@ -1,7 +1,5 @@
 import Lib
 
-import Control.Monad.State
-
 import Data.Sequence (Seq, index, update, adjust)
 import qualified Data.Sequence as Seq
 
