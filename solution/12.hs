@@ -16,17 +16,6 @@ data Journey = Journey
     { start, end :: Pos
     , stepsMade :: Int }
 
--- TODO: move to Lib (also replacing Coord for 09)
---       also for instance below
-data Pos = Pos { x, y :: Int }
-  deriving (Eq, Ord)
-
-instance Num Pos where
-    (Pos x y) + (Pos x' y') = Pos (x + x') (y + y')
-    (Pos x y) - (Pos x' y') = Pos (x - x') (y - y')
-    abs (Pos x y) = Pos (abs x) (abs y)
-    (*) = undefined; signum = undefined; fromInteger = undefined
-
 nextSteps :: HeightMap -> Pos -> [Pos]
 nextSteps (HeightMap heights h w) pos =
     [Pos 1 0, Pos 0 1, Pos (-1) 0, Pos 0 (-1)]

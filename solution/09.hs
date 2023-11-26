@@ -3,39 +3,35 @@ import Lib
 import Data.Set (Set)
 import qualified Data.Set as Set
 
-type Rope = [Coord]
-
-type Coord = (Int, Int)
+type Rope = [Pos]
 
 -- values within [-1 .. 1]
-type Offset = Coord
+type Offset = Pos
 
 move :: Offset -> Rope -> Rope
 move offset (h : ts) =
-    scanl follow (h +@ offset) ts
+    scanl follow (h + offset) ts
   where follow h t
-            | let (x, y) = h -@ t in
+            | let Pos x y = h - t in
               all (inRange (-1, 1)) [x, y] = t          -- adjacency
-            | otherwise = h +@ case h -@ t of
-                (x, y) | (abs x, abs y) == (2, 2)       -- corners
-                       -> (- signum x, - signum y)
-                (x, _) | x > 1  -> (-1,  0)             -- edges
-                       | x < -1 -> ( 1,  0)
-                (_, y) | y > 1  -> ( 0, -1)
-                       | y < -1 -> ( 0,  1)
-        (x, y) +@ (x', y') = (x + x', y + y')
-        (x, y) -@ (x', y') = (x - x', y - y')
+            | otherwise = h + case h - t of
+                Pos x y | (abs x, abs y) == (2, 2)      -- corners
+                       -> Pos (-signum x) (-signum y)
+                Pos x _ | x > 1  -> Pos (-1)  0         -- edges
+                        | x < -1 -> Pos   1   0
+                Pos _ y | y > 1  -> Pos   0 (-1)
+                        | y < -1 -> Pos   0   1
 
 parseOffsets = concat . mapLines parseGroup
   where parseGroup (dir : _ : n) =
             replicate (read n) $ case dir of
-                'U' -> ( 0,  1)
-                'D' -> ( 0, -1)
-                'L' -> (-1,  0)
-                'R' -> ( 1,  0)
+                'U' -> Pos   0   1
+                'D' -> Pos   0 (-1)
+                'L' -> Pos (-1)  0
+                'R' -> Pos   1   0
 
 withLen :: Int -> Rope
-withLen n = replicate n (0, 0)
+withLen n = replicate n (Pos 0 0)
 
 visited :: Rope -> [Offset] -> Set Offset
 visited _ [] = Set.empty

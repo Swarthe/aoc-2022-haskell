@@ -1,5 +1,6 @@
 module Lib
-  ( solution, splitOn, splitOnFirst, pierceAt, elemIx, findIx, mapLines, pmap
+  ( Pos (..)
+  , solution, splitOn, splitOnFirst, pierceAt, elemIx, findIx, mapLines, pmap
   , sort, group, nub, transpose, intercalate, isPrefixOf, find
   , isLower, isAlpha, isDigit, ord, chr
   , inRange
@@ -26,6 +27,14 @@ import Control.Monad.State
 import Text.Printf (printf)
 import Data.Maybe (fromJust)
 
+data Pos = Pos { x, y :: Int }
+  deriving (Eq, Ord)
+
+instance Num Pos where
+    (Pos x y) + (Pos x' y') = Pos (x + x') (y + y')
+    (Pos x y) - (Pos x' y') = Pos (x - x') (y - y')
+    abs (Pos x y) = Pos (abs x) (abs y)
+    (*) = undefined; signum = undefined; fromInteger = undefined
 
 solution :: (Show a, Show b) => Int -> (String -> (a, b)) -> IO ()
 solution day solver = do
