@@ -2,9 +2,11 @@ module Lib
   ( Pos (..)
   , solution, splitOn, splitOnFirst, pierceAt, elemIx, findIx, mapLines, pmap
   , sort, group, nub, transpose, intercalate, isPrefixOf, find
+    , minimumBy, maximumBy
   , isLower, isAlpha, isDigit, ord, chr
   , inRange
   , toList
+  , comparing
   , on
   , (&), (>>>)
   , module Control.Monad.State
@@ -13,11 +15,13 @@ where
 
 import Data.List
     ( sort, group, nub, transpose, intercalate, isPrefixOf, find
+    , minimumBy, maximumBy
     , findIndex )
 
 import Data.Char (isLower, isAlpha, isDigit, ord, chr)
 import Data.Ix (inRange)
 import Data.Foldable (toList)
+import Data.Ord (comparing)
 
 import Data.Function ((&), on)
 import Control.Arrow ((>>>))

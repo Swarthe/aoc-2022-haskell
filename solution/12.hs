@@ -13,8 +13,7 @@ data HeightMap = HeightMap
     , h, w :: Int }
 
 data Journey = Journey
-    { start, end :: Pos
-    , stepsMade :: Int }
+    { pos :: Pos, stepsMade :: Int }
 
 nextSteps :: HeightMap -> Pos -> [Pos]
 nextSteps (HeightMap heights h w) pos =
@@ -25,6 +24,17 @@ nextSteps (HeightMap heights h w) pos =
   where isSteppable h i = h + 1 >= i
         inBounds p@(Pos x y) = abs p == p && x < w && y < h
 
+-- BFS
+travelSteps :: HeightMap -> Set Pos -> [Journey] -> Pos -> Int
+travelSteps hmap visited (Journey pos stepsMade : js) end
+    | pos == end = stepsMade
+    | otherwise = travelSteps hmap visited' (js ++ next) end
+  where steps = nextSteps hmap pos
+            & filter (`notMember` visited)
+        next = steps
+            & map (\p -> Journey p (stepsMade + 1))
+        visited' = visited `union` Set.fromList steps
+
 parseHeightMap = lines >>> \ls ->
     let (h, w) = (length ls, length (head ls))
      in concat ls & zipWith (\i c -> (ixToPos i w, parseHeight c)) [0..]
@@ -34,29 +44,24 @@ parseHeightMap = lines >>> \ls ->
         parseHeight 'E' = ord 'z'
         parseHeight  c  = ord c
 
-parseJourney = lines >>> \ls ->
-    Journey { start = elemPos 'S' ls
-            , end = elemPos 'E' ls
-            , stepsMade = 0 }
+parseStartEnd = lines >>> \ls ->
+    (elemPos 'S' ls, elemPos 'E' ls)
   where elemPos e rows = head
             [Pos x y | (y, cols) <- zip [0..] rows,
                         x        <- elemIndices e cols]
 
-travelShortest :: HeightMap -> Journey -> Journey
-travelShortest hmap journey@(Journey start end _) =
-    go (Set.singleton start) [journey]
-  where go visited (j@(Journey start _ stepsMade) : js)
-            | start == end = j
-            | otherwise = go visited' (js ++ next)
-          where steps = nextSteps hmap start
-                    & filter (`notMember` visited)
-                next = steps
-                    & map (\s -> Journey s end (stepsMade + 1))
-                visited' = visited `union` Set.fromList steps
+steps :: HeightMap -> Pos -> Pos -> Int
+steps hmap start = travelSteps hmap (Set.singleton start) js
+  where js = [Journey start 0]
+
+stepsFromLow :: HeightMap -> Pos -> Int
+stepsFromLow hmap@(HeightMap heights _ _) end = lows
+    & map (`Journey` 0)
+    & \js -> travelSteps hmap (Set.fromList lows) js end
+  where lows = Map.keys $ Map.filter (== ord 'a') heights
 
 main = solution 12 $ \input -> do
     let hmap = parseHeightMap input
-        journey = parseJourney input
-        shortest = travelShortest hmap journey
-     in ( stepsMade shortest
-        , "todo" )
+        (start, end) = parseStartEnd input
+     in ( steps hmap start end
+        , stepsFromLow hmap end )
