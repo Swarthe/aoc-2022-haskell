@@ -1,17 +1,26 @@
-# aoc-2022-haskell
+# aoc-haskell
 
-[Advent of Code 2022](https://adventofcode.com/2022) in vanilla Haskell
-(incomplete).
+[Advent of Code](https://adventofcode.com/2022) in vanilla Haskell (partial).
 
-started with 0 haskell knowledge, and used the puzzles to learn haskell.
-earlier solutions were updated as i accumulated haskell experience
+I made this in order to learn haskell. earlier solutions were updated as i
+accumulated haskell experience
 
-- my favourites: `06`, `09`, `11`
+to run the solutions, i recommend using `runghc [FILE]` in an `src/[YEAR]`
+directory. for example, use `runghc 09` in `src/2022` to run the solution to day
+9 of AoC 2022.
+
+each completed day has a corresponding file as a solution, which outputs two
+lines when run (one for each part of the puzzle). this project doesn't use a
+build system
+
+## 2022
+
+- my favourites: `06`, `09`
 - my hardest: `07`, `09`
 
-to run the solutions, i recommend using `runghc -w [FILE]` in the `solutions/`
-directory. each day has a corresponding file as a solution, which outputs two
-lines when run (one for each part of the puzzle)
+## 2023
+
+- my favourites: `07`
 
 ## License
 

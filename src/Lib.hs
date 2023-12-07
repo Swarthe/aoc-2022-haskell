@@ -43,7 +43,7 @@ solution :: (Show a, Show b) => Int -> (String -> (a, b)) -> IO ()
 solution day solver = do
     (p1, p2) <- solver <$> readInput day
     print p1; print p2
-  where readInput = readFile . printf "../input/%02d.txt"
+  where readInput = readFile . printf "input/%02d.txt"
 
 splitOn :: Eq a => a -> [a] -> [[a]]
 splitOn a xs = case break (== a) xs of
