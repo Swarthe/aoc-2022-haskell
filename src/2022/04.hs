@@ -5,8 +5,8 @@ type SectionID = Int
 type Elf = (SectionID, SectionID)
 
 parseElves :: String -> [(Elf, Elf)]
-parseElves = mapLines (splitOnFirst ',' >>> pmap parseElf)
-  where parseElf = splitOnFirst '-' >>> pmap read
+parseElves = mapLines (pmap parseElf . splitOnFirst ',')
+  where parseElf = pmap read . splitOnFirst '-'
 
 countContaining :: [(Elf, Elf)] -> Int
 countContaining = count

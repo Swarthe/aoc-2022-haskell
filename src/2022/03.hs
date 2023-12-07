@@ -28,11 +28,10 @@ parseGroups = parseRucksacks
 
 totalDupPrio :: [Rucksack] -> Int
 totalDupPrio = map (prio . dupItem) >>> sum
-  where dupItem (Rucksack a b) = a & filter (`elem` b)
-                                   & head
+  where dupItem (Rucksack a b) = head (filter (`elem` b) a)
 
 totalBadgePrio :: [Group] -> Int
-totalBadgePrio = map (prio . badge) >>> sum
+totalBadgePrio = sum . map (prio . badge)
 
 main = solution 3 $ \input ->
     ( totalDupPrio   (parseRucksacks input)

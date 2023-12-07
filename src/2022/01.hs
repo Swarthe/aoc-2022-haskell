@@ -11,5 +11,5 @@ last3 (_ : xs) = last3 xs
 
 main = solution 1 $ \input ->
     let calSums = parseCalorieSums input
-     in ( last calSums
+     in (       last  calSums
         , sum $ last3 calSums )

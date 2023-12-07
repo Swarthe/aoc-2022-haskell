@@ -46,9 +46,10 @@ parseHeightMap = lines >>> \ls ->
 
 parseStartEnd = lines >>> \ls ->
     (elemPos 'S' ls, elemPos 'E' ls)
-  where elemPos e rows = head
-            [Pos x y | (y, cols) <- zip [0..] rows,
-                        x        <- elemIndices e cols]
+  where
+    elemPos e rows = head
+        [Pos x y | (y, cols) <- zip [0..] rows,
+                    x        <- elemIndices e cols]
 
 steps :: HeightMap -> Pos -> Pos -> Int
 steps hmap start = travelSteps hmap (Set.singleton start) js
@@ -63,5 +64,5 @@ stepsFromLow hmap@(HeightMap heights _ _) end = lows
 main = solution 12 $ \input -> do
     let hmap = parseHeightMap input
         (start, end) = parseStartEnd input
-     in ( steps hmap start end
+     in ( steps  hmap start end
         , stepsFromLow hmap end )

@@ -1,7 +1,5 @@
 import Lib
 
-import Data.Bifunctor (first)
-
 type Card = Int
 type Strength = Int
 
@@ -57,5 +55,5 @@ totalWinnings = zip [1..]
 main = solution 7 $ \input ->
     let plays = parsePlays input
      in pmap totalWinnings
-        ( sortPlays plays
+        ( sortPlays      plays
         , sortPlaysJoker plays )

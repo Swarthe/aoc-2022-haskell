@@ -32,25 +32,31 @@ runTurn handler monkey = do
     modify $ update (ix monkey) monkey
         { inspections = inspections monkey + length items
         , itemWorries = [] }
-  where targetIxFor worry = monkey &
-            if worry `rem` testDivBy monkey == 0
-            then targetIfTrue else targetIfFalse
+  where
+    targetIxFor worry = monkey &
+        if worry `rem` testDivBy monkey == 0
+            then targetIfTrue
+            else targetIfFalse
 
-parseMonkeys = Seq.fromList . map parseMonkey . splitOn "" . lines
-  where parseMonkey (a : b : c : d : e : f : _) =
-            Monkey { ix = readLast (init a)
-                   , itemWorries = parseItems b
-                   , worryOp = parseOp c
-                   , testDivBy = readLast d
-                   , targetIfTrue = readLast e
-                   , targetIfFalse = readLast f
-                   , inspections = 0 }
-        parseOp l = let c : _ : s = drop 23 l in
-            case c of '*' | s == "old" -> Square
-                          | otherwise -> Mul (read s)
-                      '+' -> Add (read s)
-        parseItems = map read . splitOn ',' . drop 18
-        readLast = read . last . words
+parseMonkeys = lines
+    >>> splitOn ""
+    >>> map parseMonkey
+    >>> Seq.fromList
+  where
+    parseMonkey (a : b : c : d : e : f : _) =
+        Monkey { ix = readLast (init a)
+               , itemWorries = parseItems b
+               , worryOp = parseOp c
+               , testDivBy = readLast d
+               , targetIfTrue = readLast e
+               , targetIfFalse = readLast f
+               , inspections = 0 }
+    parseOp l = let c : _ : s = drop 23 l in
+        case c of '*' | s == "old" -> Square
+                      | otherwise -> Mul (read s)
+                  '+' -> Add (read s)
+    parseItems = map read . splitOn ',' . drop 18
+    readLast = read . last . words
 
 monkeyReduction :: Seq Monkey -> Reduction
 monkeyReduction = product . fmap testDivBy
@@ -64,16 +70,18 @@ handlerWith reduction monkey = (`rem` reduction)
 
 runRounds :: Handler -> Seq Monkey -> [Seq Monkey]
 runRounds handler = iterate (execState runRound)
-  where runRound = do
-            monkeyCount <- gets Seq.length
+  where
+    runRound = do
+        monkeyCount <- gets Seq.length
 
-            forM_ [0 .. monkeyCount - 1] $ \i ->
-                gets (`index` i) >>= runTurn handler
-        applyWith reduction monkey = (`rem` reduction)
-            >>> case worryOp monkey of
-                    Mul i -> (* i)
-                    Add i -> (+ i)
-                    Square -> (^ 2)
+        forM_ [0 .. monkeyCount - 1] $ \i ->
+            gets (`index` i) >>= runTurn handler
+
+    applyWith reduction monkey = (`rem` reduction)
+        >>> case worryOp monkey of
+                Mul i -> (* i)
+                Add i -> (+ i)
+                Square -> (^ 2)
 
 monkeyBusiness :: Seq Monkey -> Int
 monkeyBusiness monkeys = inspections a * inspections b
@@ -86,5 +94,5 @@ main = solution 11 $ \input ->
         handler = handlerWith reduction
         rounds1 = runRounds (((`div` 3) .) . handler) monkeys
         rounds2 = runRounds handler monkeys
-     in ( monkeyBusiness (rounds1 !! 20)
+     in ( monkeyBusiness (rounds1 !! 20   )
         , monkeyBusiness (rounds2 !! 10000) )

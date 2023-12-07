@@ -19,23 +19,26 @@ countVisible ts = innerIxs ts
     & filter isVisible
     & length
     & (+ numEdge)
-  where isVisible (y, x) = let t = ts !! y !! x in
-             not . all (any (>= t)) $ surrounding (y, x) ts
-        numEdge = length ts * 2 + (length (head ts) - 2) * 2
+  where
+    isVisible (y, x) = let t = ts !! y !! x in
+        not . all (any (>= t)) $ surrounding (y, x) ts
+    numEdge = length ts * 2 + (length (head ts) - 2) * 2
 
 -- we assume the highest score isn't at the edges
 maxScenicScore :: [[Tree]] -> Int
 maxScenicScore ts = maximum $ map scenicScore (innerIxs ts)
-  where scenicScore (y, x) = let t = ts !! y !! x in
-            surrounding (y, x) ts
-                & map (length . takeWhileInc (< t))
-                & product
-        takeWhileInc _ [] = []
-        takeWhileInc f (x : xs) =
-            if f x then x : takeWhileInc f xs
-                   else [x]
+  where
+    scenicScore (y, x) = let t = ts !! y !! x in
+        surrounding (y, x) ts
+            & map (length . takeWhileInc (< t))
+            & product
+
+    takeWhileInc _ [] = []
+    takeWhileInc f (x : xs) =
+        if f x then x : takeWhileInc f xs
+               else [x]
 
 main = solution 8 $ \input ->
     let trees = parseTrees input
-     in ( countVisible trees
+     in ( countVisible   trees
         , maxScenicScore trees )

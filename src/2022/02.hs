@@ -8,9 +8,10 @@ data Game = Game Move Move
 
 data Pred = Pred Move Result
 
-moveFromChar c | c `elem` "AX" = Rock
-               | c `elem` "BY" = Paper
-               | c `elem` "CZ" = Scissors
+moveFromChar c
+    | c `elem` "AX" = Rock
+    | c `elem` "BY" = Paper
+    | c `elem` "CZ" = Scissors
 
 moveFromInt i = case i of
     0 -> Rock
@@ -42,28 +43,29 @@ parseGames = parseWith $ \c d ->
     Game (moveFromChar d) (moveFromChar c)
 
 parsePredGames = map predict . parsePreds
-  where parsePreds = parseWith $ \c d ->
-            Pred (moveFromChar c) (resultFromChar d)
-        predict p = let Pred m _ = p in
-            Game (moveForPred p) m
-
-        resultFromChar c = case c of
-            'X' -> Loss
-            'Y' -> Draw
-            'Z' -> Victory
+  where
+    parsePreds = parseWith $ \c d ->
+        Pred (moveFromChar c) (resultFromChar d)
+    predict p = let Pred m _ = p in
+        Game (moveForPred p) m
+    resultFromChar c = case c of
+        'X' -> Loss
+        'Y' -> Draw
+        'Z' -> Victory
 
 computeScore :: [Game] -> Int
-computeScore games = sum $
-    zipWith (\(Game m _) r -> moveToScore m + resultToScore r)
-            games results
-  where moveToScore =
-            (+ 1) . moveToInt
-        resultToScore r = case r of
-            Draw -> 3
-            Victory -> 6
-            Loss -> 0
-        results =
-            map play games
+computeScore games = results
+    & zipWith (\(Game m _) r -> moveToScore m + resultToScore r) games
+    & sum
+  where
+    moveToScore =
+        (+ 1) . moveToInt
+    resultToScore r = case r of
+        Draw -> 3
+        Victory -> 6
+        Loss -> 0
+    results =
+        map play games
 
 main = solution 2 $ \input ->
     pmap computeScore
