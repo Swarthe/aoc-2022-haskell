@@ -7,6 +7,7 @@ module Lib
   , inRange
   , toList
   , comparing
+  , first, second, bimap
   , (&), (>>>)
   , module Control.Monad.State
   )
@@ -21,6 +22,7 @@ import Data.Char (isLower, isAlpha, isDigit, ord, chr, digitToInt)
 import Data.Ix (inRange)
 import Data.Foldable (toList)
 import Data.Ord (comparing)
+import Data.Bifunctor (first, second, bimap)
 
 import Data.Function ((&))
 import Control.Arrow ((>>>))
