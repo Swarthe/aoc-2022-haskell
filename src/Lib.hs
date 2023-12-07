@@ -1,5 +1,6 @@
 module Lib
-  ( Pos (..)
+  ( Pos (..), Grid (..)
+    , (!), fromList
   , solution, splitOn, splitOnFirst, pierceAt, elemIx, findIx, count, mapLines, pmap
   , sort, group, nub, transpose, intercalate, isPrefixOf, find
     , minimumBy, maximumBy, groupBy, sortOn
@@ -31,15 +32,32 @@ import Control.Monad.State
 
 import Text.Printf (printf)
 import Data.Maybe (fromJust)
+import Data.Map (Map)
+import qualified Data.Map as Map
 
 data Pos = Pos { x, y :: Int }
   deriving (Eq, Ord)
+
+data Grid a = Grid
+    { elems :: Map Pos a
+    , height, width :: Int }
 
 instance Num Pos where
     (Pos x y) + (Pos x' y') = Pos (x + x') (y + y')
     (Pos x y) - (Pos x' y') = Pos (x - x') (y - y')
     abs (Pos x y) = Pos (abs x) (abs y)
     (*) = undefined; signum = undefined; fromInteger = undefined
+
+-- every sub-list must be of the same length
+fromList :: [[a]] -> Grid a
+fromList xxs = concat xxs
+    & zipWith (\i x -> (ixToPos i w, x)) [0..]
+    & \pxs -> Grid (Map.fromList pxs) h w
+  where ixToPos i w = Pos (i `rem` w) (i `div` w)
+        (h, w) = (length xxs, length (head xxs))
+
+(!) :: Grid a -> Pos -> a
+(!) = (Map.!) . elems
 
 solution :: (Show a, Show b) => Int -> (String -> (a, b)) -> IO ()
 solution day solver = do

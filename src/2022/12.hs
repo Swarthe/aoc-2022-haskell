@@ -3,24 +3,20 @@ import Lib
 import Data.Set (Set, union, notMember)
 import qualified Data.Set as Set
 
-import Data.Map (Map, (!))
 import qualified Data.Map as Map
 
 import Data.List (elemIndices)
 
-data HeightMap = HeightMap
-    { heights :: Map Pos Int
-    , h, w :: Int }
+data Journey = Journey { pos :: Pos, stepsMade :: Int }
 
-data Journey = Journey
-    { pos :: Pos, stepsMade :: Int }
+type HeightMap = Grid Int
 
 nextSteps :: HeightMap -> Pos -> [Pos]
-nextSteps (HeightMap heights h w) pos =
+nextSteps hmap@(Grid _ h w) pos =
     [Pos 1 0, Pos 0 1, Pos (-1) 0, Pos 0 (-1)]
         & map (+ pos)
         & filter inBounds
-        & filter (isSteppable (heights ! pos) . (heights !))
+        & filter (isSteppable (hmap ! pos) . (hmap !))
   where isSteppable h i = h + 1 >= i
         inBounds p@(Pos x y) = abs p == p && x < w && y < h
 
@@ -35,12 +31,9 @@ travelSteps hmap visited (Journey pos stepsMade : js) end
             & map (\p -> Journey p (stepsMade + 1))
         visited' = visited `union` Set.fromList steps
 
-parseHeightMap = lines >>> \ls ->
-    let (h, w) = (length ls, length (head ls))
-     in concat ls & zipWith (\i c -> (ixToPos i w, parseHeight c)) [0..]
-                  & \pHeights -> HeightMap (Map.fromList pHeights) h w
-  where ixToPos i w = Pos (i `rem` w) (i `div` w)
-        parseHeight 'S' = ord 'a'
+parseHeightMap :: String -> HeightMap
+parseHeightMap = fromList . mapLines (map parseHeight)
+  where parseHeight 'S' = ord 'a'
         parseHeight 'E' = ord 'z'
         parseHeight  c  = ord c
 
@@ -56,7 +49,7 @@ steps hmap start = travelSteps hmap (Set.singleton start) js
   where js = [Journey start 0]
 
 stepsFromLow :: HeightMap -> Pos -> Int
-stepsFromLow hmap@(HeightMap heights _ _) end = lows
+stepsFromLow hmap@(Grid heights _ _) end = lows
     & map (`Journey` 0)
     & \js -> travelSteps hmap (Set.fromList lows) js end
   where lows = Map.keys $ Map.filter (== ord 'a') heights
@@ -64,5 +57,5 @@ stepsFromLow hmap@(HeightMap heights _ _) end = lows
 main = solution 12 $ \input -> do
     let hmap = parseHeightMap input
         (start, end) = parseStartEnd input
-     in ( steps  hmap start end
+     in ( steps hmap start end
         , stepsFromLow hmap end )

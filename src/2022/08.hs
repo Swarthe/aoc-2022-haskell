@@ -2,41 +2,43 @@ import Lib
 
 type Tree = Int     -- represents height
 
-surrounding :: (Int, Int) -> [[Tree]] -> [[Tree]]
-surrounding (y, x) ts = [reverse l, r, reverse u, d]
-  where (l, r) = pierceAt x (ts !! y)
-        (u, d) = pierceAt y [ts !! y' !! x | y' <- [0 .. length ts - 1]]
+-- each tree list is a direction (U, D, L, R)
+surrounding :: Pos -> Grid Tree -> [[Tree]]
+surrounding (Pos x y) ts@(Grid _ h w) =
+    [reverse u, d, reverse l, r]
+  where
+    (u, d) = pierceAt y [ts ! Pos x  y' | y' <- [0 .. h - 1]]
+    (l, r) = pierceAt x [ts ! Pos x' y  | x' <- [0 .. w - 1]]
 
-innerIxs :: [[Tree]] -> [(Int, Int)]
-innerIxs ts = [(y, x) | y <- [1 .. length ts - 2],
-                        x <- [1 .. length (head ts) - 2]]
+innerIxs :: Grid Tree -> [Pos]
+innerIxs (Grid _ h w) =
+    [Pos y x | y <- [1 .. h - 2], x <- [1 .. w - 2]]
 
-parseTrees :: String -> [[Tree]]
-parseTrees = mapLines (map digitToInt)
+parseTrees = fromList . mapLines (map digitToInt)
 
-countVisible :: [[Tree]] -> Int
-countVisible ts = innerIxs ts
+countVisible :: Grid Tree -> Int
+countVisible ts@(Grid _ h w) = innerIxs ts
     & filter isVisible
     & length
     & (+ numEdge)
   where
-    isVisible (y, x) = let t = ts !! y !! x in
-        not . all (any (>= t)) $ surrounding (y, x) ts
-    numEdge = length ts * 2 + (length (head ts) - 2) * 2
+    isVisible p = let t = ts ! p in
+        not . all (any (>= t)) $ surrounding p ts
+    numEdge = h * 2 + (w - 2) * 2
 
 -- we assume the highest score isn't at the edges
-maxScenicScore :: [[Tree]] -> Int
-maxScenicScore ts = maximum $ map scenicScore (innerIxs ts)
+maxScenicScore :: Grid Tree -> Int
+maxScenicScore ts =
+    maximum $ map scenicScore (innerIxs ts)
   where
-    scenicScore (y, x) = let t = ts !! y !! x in
-        surrounding (y, x) ts
-            & map (length . takeWhileInc (< t))
-            & product
+    scenicScore p = let t = ts ! p in surrounding p ts
+        & map (length . takeWhileInc (< t))
+        & product
 
     takeWhileInc _ [] = []
-    takeWhileInc f (x : xs) =
-        if f x then x : takeWhileInc f xs
-               else [x]
+    takeWhileInc f (x : xs)
+        | f x = x : takeWhileInc f xs
+        | otherwise = [x]
 
 main = solution 8 $ \input ->
     let trees = parseTrees input
