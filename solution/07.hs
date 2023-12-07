@@ -1,7 +1,5 @@
 import Lib
 
-import Data.List (groupBy, minimumBy)
-
 data Cmd = Cd { dir :: String }
          | Ls { output :: [String] }
 

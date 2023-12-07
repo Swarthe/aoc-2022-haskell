@@ -9,14 +9,14 @@ parseElves = mapLines (splitOnFirst ',' >>> pmap parseElf)
   where parseElf = splitOnFirst '-' >>> pmap read
 
 countContaining :: [(Elf, Elf)] -> Int
-countContaining = filter (\(a, b) -> (fst a <= fst b && snd a >= snd b)
-                                  || (fst a >= fst b && snd a <= snd b))
-                  >>> length
+countContaining = count
+    $ \(a, b) -> (fst a <= fst b && snd a >= snd b)
+              || (fst a >= fst b && snd a <= snd b)
 
 countOverlapping :: [(Elf, Elf)] -> Int
-countOverlapping = filter (\(a, b) -> not ((fst a < fst b && snd a < fst b)
-                                        || (fst a > snd b && snd a > snd b)))
-                   >>> length
+countOverlapping = count
+    $ \(a, b) -> not ((fst a < fst b && snd a < fst b)
+                   || (fst a > snd b && snd a > snd b))
 
 main = solution 4 $ \input ->
     let elves = parseElves input

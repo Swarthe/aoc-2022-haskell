@@ -12,7 +12,7 @@ innerIxs ts = [(y, x) | y <- [1 .. length ts - 2],
                         x <- [1 .. length (head ts) - 2]]
 
 parseTrees :: String -> [[Tree]]
-parseTrees = mapLines (map $ read . (:[]))
+parseTrees = mapLines (map digitToInt)
 
 countVisible :: [[Tree]] -> Int
 countVisible ts = innerIxs ts

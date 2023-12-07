@@ -1,13 +1,12 @@
 module Lib
   ( Pos (..)
-  , solution, splitOn, splitOnFirst, pierceAt, elemIx, findIx, mapLines, pmap
+  , solution, splitOn, splitOnFirst, pierceAt, elemIx, findIx, count, mapLines, pmap
   , sort, group, nub, transpose, intercalate, isPrefixOf, find
-    , minimumBy, maximumBy
-  , isLower, isAlpha, isDigit, ord, chr
+    , minimumBy, maximumBy, groupBy, sortOn
+  , isLower, isAlpha, isDigit, ord, chr, digitToInt
   , inRange
   , toList
   , comparing
-  , on
   , (&), (>>>)
   , module Control.Monad.State
   )
@@ -15,15 +14,15 @@ where
 
 import Data.List
     ( sort, group, nub, transpose, intercalate, isPrefixOf, find
-    , minimumBy, maximumBy
+    , minimumBy, maximumBy, groupBy, sortOn
     , findIndex )
 
-import Data.Char (isLower, isAlpha, isDigit, ord, chr)
+import Data.Char (isLower, isAlpha, isDigit, ord, chr, digitToInt)
 import Data.Ix (inRange)
 import Data.Foldable (toList)
 import Data.Ord (comparing)
 
-import Data.Function ((&), on)
+import Data.Function ((&))
 import Control.Arrow ((>>>))
 
 import Control.Monad.State
@@ -63,6 +62,9 @@ elemIx a = findIx (== a)
 
 findIx :: (a -> Bool) -> [a] -> Int
 findIx f = fromJust . findIndex f
+
+count :: (a -> Bool) -> [a] -> Int
+count f = length . filter f
 
 mapLines :: (String -> a) -> String -> [a]
 mapLines f = map f . lines
