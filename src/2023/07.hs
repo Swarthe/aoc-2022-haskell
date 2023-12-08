@@ -40,12 +40,8 @@ sortPlaysJoker = sortPlaysWith $ \p@(Play h _) ->
 
 parsePlays = mapLines $ \l ->
     let [a, b] = splitOn ' ' l
-     in Play (hand a) (read b)
-  where
-    hand = map $ \c -> case c of
-        _ | isDigit c -> digitToInt c - 1
-        'T' -> 9;   'J' -> 10;  'Q' -> 11
-        'K' -> 12;  'A' -> 13
+     in Play { hand = map (`elemIx` "_23456789TJQKA") a
+             , bid = read b }
 
 -- plays must be sorted by rank
 totalWinnings = zip [1..]
