@@ -4,8 +4,6 @@ import qualified Data.Map as Map
 
 data Journey = Journey { cur, prev :: Pos }
 
--- TODO: optimise `fromList` in `Lib` to simple version
-
 -- doesn't work for start 'S'
 links :: Pos -> Grid Char -> (Pos, Pos)
 links p ts = pmap (p +) $ case ts ! p of

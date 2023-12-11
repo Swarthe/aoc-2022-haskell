@@ -51,11 +51,13 @@ instance Num Pos where
 -- every sub-list must be of the same length
 -- top left (head . head) is Pos 0 0
 fromList :: [[a]] -> Grid a
-fromList xxs = concat xxs
-    & zipWith (\i x -> (ixToPos i w, x)) [0..]
-    & \pxs -> Grid (Map.fromList pxs) h w
-  where ixToPos i w = Pos (i `rem` w) (i `div` w)
-        (h, w) = (length xxs, length (head xxs))
+fromList xss = Grid
+    { elems  = Map.fromList
+        [ (Pos x y, e)
+        | (y, xs) <- zip [0..] xss,
+          (x, e ) <- zip [0..] xs ]
+    , height = length xss
+    , width  = length (head xss) }
 
 (!) :: Grid a -> Pos -> a
 (!) = (Map.!) . elems
@@ -72,13 +74,13 @@ inBounds p@(Pos x y) (Grid _ h w) =
 
 -- up to 4 neighbours (NSEW in order)
 neighbours :: Pos -> Grid a -> [Pos]
-neighbours pos grid = 
+neighbours pos grid =
     [Pos 0 1, Pos 0 (-1), Pos 1 0, Pos (-1) 0]
         & map (+ pos)
         & filter (`inBounds` grid)
 
 mapWithPos :: (Pos -> a -> b) -> Grid a -> Grid b
-mapWithPos f (Grid xs h w) = Grid (Map.mapWithKey f xs) h w 
+mapWithPos f (Grid xs h w) = Grid (Map.mapWithKey f xs) h w
 
 solution :: (Show a, Show b) => Int -> (String -> (a, b)) -> IO ()
 solution day solver = do
