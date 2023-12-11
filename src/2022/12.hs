@@ -12,13 +12,9 @@ data Journey = Journey { pos :: Pos, stepsMade :: Int }
 type HeightMap = Grid Int
 
 nextSteps :: HeightMap -> Pos -> [Pos]
-nextSteps hmap@(Grid _ h w) pos =
-    [Pos 1 0, Pos 0 1, Pos (-1) 0, Pos 0 (-1)]
-        & map (+ pos)
-        & filter inBounds
-        & filter (isSteppable (hmap ! pos) . (hmap !))
+nextSteps hmap@(Grid _ h w) pos = neighbours pos hmap
+    & filter (isSteppable (hmap ! pos) . (hmap !))
   where isSteppable h i = h + 1 >= i
-        inBounds p@(Pos x y) = abs p == p && x < w && y < h
 
 -- BFS
 travelSteps :: HeightMap -> Set Pos -> [Journey] -> Pos -> Int

@@ -1,6 +1,6 @@
 module Lib
   ( Pos (..), Grid (..)
-    , (!), fromList
+    , fromList, (!), elemPos, inBounds, neighbours, mapWithPos
   , solution, splitOn, splitOnFirst, pierceAt, elemIx, findIx, count, mapLines, pmap
   , sort, group, nub, transpose, intercalate, isPrefixOf, find
     , minimumBy, maximumBy, groupBy, sortOn
@@ -36,7 +36,7 @@ import Data.Map (Map)
 import qualified Data.Map as Map
 
 data Pos = Pos { x, y :: Int }
-  deriving (Eq, Ord)
+  deriving (Eq, Ord, Show)
 
 data Grid a = Grid
     { elems :: Map Pos a
@@ -49,6 +49,7 @@ instance Num Pos where
     (*) = undefined; signum = undefined; fromInteger = undefined
 
 -- every sub-list must be of the same length
+-- top left (head . head) is Pos 0 0
 fromList :: [[a]] -> Grid a
 fromList xxs = concat xxs
     & zipWith (\i x -> (ixToPos i w, x)) [0..]
@@ -58,6 +59,26 @@ fromList xxs = concat xxs
 
 (!) :: Grid a -> Pos -> a
 (!) = (Map.!) . elems
+
+elemPos :: Eq a => a -> Grid a -> Pos
+elemPos x = elems
+    >>> Map.filter (== x)
+    >>> Map.findMin
+    >>> fst
+
+inBounds :: Pos -> Grid a -> Bool
+inBounds p@(Pos x y) (Grid _ h w) =
+    abs p == p && x < w && y < h
+
+-- up to 4 neighbours (NSEW in order)
+neighbours :: Pos -> Grid a -> [Pos]
+neighbours pos grid = 
+    [Pos 0 1, Pos 0 (-1), Pos 1 0, Pos (-1) 0]
+        & map (+ pos)
+        & filter (`inBounds` grid)
+
+mapWithPos :: (Pos -> a -> b) -> Grid a -> Grid b
+mapWithPos f (Grid xs h w) = Grid (Map.mapWithKey f xs) h w 
 
 solution :: (Show a, Show b) => Int -> (String -> (a, b)) -> IO ()
 solution day solver = do
