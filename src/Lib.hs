@@ -1,17 +1,21 @@
 module Lib
-  ( Pos (..), Grid (..)
-    , fromList, (!), elemPos, inBounds, neighbours, mapWithPos
-  , solution, splitOn, splitOnFirst, pierceAt, elemIx, findIx, count, mapLines, pmap
-  , sort, group, nub, transpose, intercalate, isPrefixOf, find
-    , minimumBy, maximumBy, groupBy, sortOn
-  , isLower, isAlpha, isDigit, ord, chr, digitToInt
-  , inRange
-  , toList
-  , comparing
-  , first, second, bimap
-  , (&), (>>>)
-  , module Control.Monad.State
-  )
+    ( Pos (..), Grid (..)
+        , fromList, (!), elemPos, inBounds, neighbours, mapWithPos
+    , solution
+        , splitOn, splitOnFirst, pierceAt, windows
+        , elemIx, findIx, count, mapLines, pmap
+    , sort, group, nub, transpose, intercalate, isPrefixOf, find
+        , minimumBy, maximumBy, groupBy, sortOn
+    , isLower, isAlpha, isDigit, ord, chr, digitToInt
+    , inRange
+    , toList
+    , comparing
+    , first, second, bimap
+    , on
+    , (&), (>>>)
+    , module Control.Monad.State
+    , module Data.Default
+    )
 where
 
 import Data.List
@@ -25,10 +29,11 @@ import Data.Foldable (toList)
 import Data.Ord (comparing)
 import Data.Bifunctor (first, second, bimap)
 
-import Data.Function ((&))
+import Data.Function ((&), on)
 import Control.Arrow ((>>>))
 
 import Control.Monad.State
+import Data.Default
 
 import Text.Printf (printf)
 import Data.Maybe (fromJust)
@@ -99,6 +104,13 @@ splitOnFirst a xs = (ys, drop 1 zs)
 
 pierceAt :: Int -> [a] -> ([a], [a])
 pierceAt i xs = drop 1 <$> splitAt i xs
+
+-- sliding window
+-- if length xs < n, returns []
+windows :: Int -> [a] -> [[a]]
+windows n xs
+    | length xs >= n = take n xs : windows n (tail xs)
+    | otherwise      = []
 
 elemIx :: Eq a => a -> [a] -> Int
 elemIx a = findIx (== a)

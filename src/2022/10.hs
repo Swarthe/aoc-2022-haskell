@@ -2,8 +2,6 @@ import Lib
 
 import Prelude hiding (cycle)
 
-import Data.Default
-
 data Instr = NoOp | AddX Int
 
 data Cpu = Cpu { cycle, x :: Int } deriving Show
